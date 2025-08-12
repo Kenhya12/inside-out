@@ -80,4 +80,29 @@ public class MomentoController {
             consolaView.mostrarMensajeError("No se encontró un momento con el ID " + id + ".");
         }
     }
+
+    public void filtrarMomentos() {
+        int opcionFiltro;
+        do {
+            opcionFiltro = consolaView.mostrarMenuFiltro();
+            
+            switch (opcionFiltro) {
+                case 1:
+                    filtrarPorEmocion();
+                    break;
+                case 0:
+                    consolaView.mostrarMensajeExito("Volviendo al menú principal.");
+                    break;
+                default:
+                    consolaView.mostrarMensajeError("Opción no válida.");
+                    break;
+            }
+        } while (opcionFiltro != 0);
+    }
+    
+    private void filtrarPorEmocion() {
+        Emotion emocion = consolaView.solicitarEmocionFiltro();
+        List<Momento> momentosFiltrados = diarioRepository.getMomentosByEmocion(emocion);
+        consolaView.mostrarMomentos(momentosFiltrados);
+    }
 }

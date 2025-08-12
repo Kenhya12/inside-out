@@ -35,6 +35,9 @@ public class Main {
                 case 3: // <-- Caso para eliminar!
                     momentoController.eliminarMomento();
                     break;
+                case 4: // <-- Caso para filtar!
+                    momentoController.filtrarMomentos();
+                    break;
                 case 0:
                     consolaView.mostrarMensajeExito("Saliendo de la aplicación. ¡Hasta pronto!");
                     break;

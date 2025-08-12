@@ -29,6 +29,7 @@ public class ConsolaView {
         System.out.println("1. Añadir un nuevo momento");
         System.out.println("2. Ver todos los momentos");
         System.out.println("3. Eliminar un momento"); 
+        System.out.println("4. Filtrar momentos"); 
         System.out.println("0. Salir");
         System.out.print("Elige una opción: ");
         
@@ -157,6 +158,56 @@ public class ConsolaView {
                 int id = scanner.nextInt();
                 scanner.nextLine(); // Limpia el buffer
                 return id;
+            } catch (InputMismatchException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
+                scanner.nextLine(); // Limpia el buffer
+            }
+        }
+    }
+
+    /**
+     * Muestra el menú de filtro y solicita una opción.
+     * @return La opción elegida por el usuario.
+     */
+    public int mostrarMenuFiltro() {
+        System.out.println("\n--- Menú de Filtros ---");
+        System.out.println("1. Filtrar por Emoción");
+        System.out.println("0. Volver al menú principal");
+        System.out.print("Elige una opción: ");
+        
+        while (!scanner.hasNextInt()) {
+            System.out.println("Entrada no válida. Por favor, introduce un número.");
+            scanner.next();
+            System.out.print("Elige una opción: ");
+        }
+        
+        int opcion = scanner.nextInt();
+        scanner.nextLine();
+        
+        return opcion;
+    }
+    
+    /**
+     * Muestra la lista de emociones disponibles y solicita al usuario que elija una.
+     * @return La emoción elegida por el usuario.
+     */
+    public Emotion solicitarEmocionFiltro() {
+        System.out.println("Elige una emoción para filtrar:");
+        Emotion[] emociones = Emotion.values();
+        for (int i = 0; i < emociones.length; i++) {
+            System.out.println((i + 1) + ". " + emociones[i].getName());
+        }
+        
+        while (true) {
+            System.out.print("Elige el número de la emoción: ");
+            try {
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); // Limpia el buffer
+                if (opcion > 0 && opcion <= emociones.length) {
+                    return emociones[opcion - 1];
+                } else {
+                    mostrarMensajeError("Opción no válida. Elige un número del 1 al " + emociones.length + ".");
+                }
             } catch (InputMismatchException e) {
                 mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
                 scanner.nextLine(); // Limpia el buffer

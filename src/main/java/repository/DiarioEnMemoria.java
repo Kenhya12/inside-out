@@ -2,11 +2,13 @@
 
 package repository;
 
+import model.Emotion;
 import model.Momento;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional; 
+import java.util.stream.Collectors;
 
 public class DiarioEnMemoria implements DiarioRepository {
     private final List<Momento> momentos;
@@ -46,5 +48,12 @@ public class DiarioEnMemoria implements DiarioRepository {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<Momento> getMomentosByEmocion(Emotion emocion) {
+        return this.momentos.stream()
+                .filter(momento -> momento.getEmocion() == emocion)
+                .collect(Collectors.toList());
     }
 }
