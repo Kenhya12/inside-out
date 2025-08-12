@@ -34,6 +34,9 @@ public class Main {
                 
                     consolaView.mostrarMensajeExito("Opción 'Ver todos los momentos' aún no implementada.");
                     break;
+                case 3: // <-- ¡Nuevo caso para eliminar!
+                    momentoController.eliminarMomento();
+                    break;
                 case 0:
                     consolaView.mostrarMensajeExito("Saliendo de la aplicación. ¡Hasta pronto!");
                     break;

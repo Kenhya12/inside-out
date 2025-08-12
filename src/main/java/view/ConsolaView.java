@@ -28,6 +28,7 @@ public class ConsolaView {
         System.out.println("\n--- Mi Diario Interior ---");
         System.out.println("1. Añadir un nuevo momento");
         System.out.println("2. Ver todos los momentos");
+        System.out.println("3. Eliminar un momento"); 
         System.out.println("0. Salir");
         System.out.print("Elige una opción: ");
         
@@ -144,4 +145,23 @@ public class ConsolaView {
             System.out.println("-------------------------------------");
         }
     }
+
+        /**
+     * Solicita al usuario el ID del momento que desea eliminar.
+     * @return El ID introducido por el usuario.
+     */
+    public int solicitarId() {
+        while (true) {
+            try {
+                System.out.print("Introduce el ID del momento que deseas eliminar: ");
+                int id = scanner.nextInt();
+                scanner.nextLine(); // Limpia el buffer
+                return id;
+            } catch (InputMismatchException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
+                scanner.nextLine(); // Limpia el buffer
+            }
+        }
+    }
 }
+

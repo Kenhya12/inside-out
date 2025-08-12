@@ -32,6 +32,9 @@ public class Main {
                     // Aquí podríamos implementar la lógica para ver todos los momentos
                     momentoController.verTodosLosMomentos();
                     break;
+                case 3: // <-- Caso para eliminar!
+                    momentoController.eliminarMomento();
+                    break;
                 case 0:
                     consolaView.mostrarMensajeExito("Saliendo de la aplicación. ¡Hasta pronto!");
                     break;

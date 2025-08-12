@@ -4,6 +4,7 @@ import model.Emotion;
 import model.Momento;
 import repository.DiarioRepository;
 import view.ConsolaView;
+import java.util.Optional;
 
 import java.time.LocalDate;
 import java.util.List; 
@@ -57,5 +58,26 @@ public class MomentoController {
 
         // El Controlador le pasa la lista a la Vista para que la muestre
         consolaView.mostrarMomentos(momentos);
+    }
+
+        public void eliminarMomento() {
+        // 1. Mostrar todos los momentos para que el usuario elija
+        this.verTodosLosMomentos();
+        
+        // Si no hay momentos, no podemos eliminar nada
+        if (diarioRepository.getTodosLosMomentos().isEmpty()) {
+            return;
+        }
+
+        // 2. Solicitar el ID del momento a eliminar
+        int id = consolaView.solicitarId();
+        
+        // 3. Eliminar el momento y mostrar el resultado
+        boolean eliminado = diarioRepository.eliminarMomento(id);
+        if (eliminado) {
+            consolaView.mostrarMensajeExito("Momento con ID " + id + " eliminado correctamente.");
+        } else {
+            consolaView.mostrarMensajeError("No se encontró un momento con el ID " + id + ".");
+        }
     }
 }
