@@ -2,11 +2,14 @@
 
 package view;
 
-import model.Emotion; // Necesitamos importar la clase Emotion
+import model.Emotion; 
+import model.Momento;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException; // Para manejar errores de tipo
+import java.util.InputMismatchException; 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsolaView {
@@ -116,8 +119,29 @@ public class ConsolaView {
                 }
             } catch (InputMismatchException e) {
                 mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
-                scanner.nextLine(); // Limpiamos la entrada incorrecta
+                scanner.nextLine(); 
             }
+        }
+    }
+
+    public void mostrarMomentos(List<Momento> momentos) {
+        if (momentos.isEmpty()) {
+            System.out.println("-------------------------------------");
+            System.out.println("No hay momentos registrados aún.");
+            System.out.println("-------------------------------------");
+            return;
+        }
+
+        System.out.println("-------------------------------------");
+        System.out.println("       LISTA DE MOMENTOS VIVIDOS");
+        System.out.println("-------------------------------------");
+        for (Momento momento : momentos) {
+            System.out.println("ID: " + momento.getId());
+            System.out.println("Título: " + momento.getTitulo());
+            System.out.println("Descripción: " + momento.getDescripcion());
+            System.out.println("Emoción: " + momento.getEmocion().getName());
+            System.out.println("Fecha del suceso: " + momento.getFechaSuceso());
+            System.out.println("-------------------------------------");
         }
     }
 }

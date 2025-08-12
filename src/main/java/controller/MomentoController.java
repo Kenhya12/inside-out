@@ -6,7 +6,7 @@ import repository.DiarioRepository;
 import view.ConsolaView;
 
 import java.time.LocalDate;
-
+import java.util.List; 
 
 public class MomentoController {
 
@@ -46,4 +46,16 @@ public class MomentoController {
         // 4. La Vista muestra un mensaje de éxito al usuario
         consolaView.mostrarMensajeExito("Momento vivido añadido correctamente.");
     } 
+    /**
+     * Coordina la visualización de todos los momentos.
+     * 1. Solicita al Repositorio la lista de momentos.
+     * 2. Le pasa esa lista a la Vista para que la muestre.
+     */
+    public void verTodosLosMomentos() {
+        // El Controlador pide la lista de momentos al Repositorio (Modelo)
+        List<Momento> momentos = diarioRepository.getTodosLosMomentos();
+
+        // El Controlador le pasa la lista a la Vista para que la muestre
+        consolaView.mostrarMomentos(momentos);
+    }
 }

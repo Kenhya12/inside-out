@@ -30,7 +30,7 @@ public class Main {
                     break;
                 case 2:
                     // Aquí podríamos implementar la lógica para ver todos los momentos
-                    consolaView.mostrarMensajeExito("Opción 'Ver todos los momentos' aún no implementada.");
+                    momentoController.verTodosLosMomentos();
                     break;
                 case 0:
                     consolaView.mostrarMensajeExito("Saliendo de la aplicación. ¡Hasta pronto!");
