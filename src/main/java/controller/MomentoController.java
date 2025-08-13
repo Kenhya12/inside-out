@@ -4,10 +4,14 @@ import model.Emotion;
 import model.Momento;
 import repository.DiarioRepository;
 import view.ConsolaView;
-import java.util.Optional;
+import dto.MomentoDTO; 
+import mapper.MomentoMapper; 
+
 
 import java.time.LocalDate;
 import java.util.List; 
+import java.util.stream.Collectors;
+
 
 public class MomentoController {
 
@@ -53,11 +57,12 @@ public class MomentoController {
      * 2. Le pasa esa lista a la Vista para que la muestre.
      */
     public void verTodosLosMomentos() {
-        // El Controlador pide la lista de momentos al Repositorio (Modelo)
         List<Momento> momentos = diarioRepository.getTodosLosMomentos();
-
-        // El Controlador le pasa la lista a la Vista para que la muestre
-        consolaView.mostrarMomentos(momentos);
+        // **CORRECCIÓN:** Convertimos la lista de Momentos a una lista de MomentoDTO
+        List<MomentoDTO> momentoDTOs = momentos.stream()
+            .map(MomentoMapper::toDTO)
+            .collect(Collectors.toList());
+        consolaView.mostrarMomentos(momentoDTOs);
     }
 
         public void eliminarMomento() {
@@ -103,6 +108,10 @@ public class MomentoController {
     private void filtrarPorEmocion() {
         Emotion emocion = consolaView.solicitarEmocionFiltro();
         List<Momento> momentosFiltrados = diarioRepository.getMomentosByEmocion(emocion);
-        consolaView.mostrarMomentos(momentosFiltrados);
+        // **CORRECCIÓN:** Convertimos la lista de Momentos a una lista de MomentoDTO
+        List<MomentoDTO> momentoDTOs = momentosFiltrados.stream()
+            .map(MomentoMapper::toDTO)
+            .collect(Collectors.toList());
+        consolaView.mostrarMomentos(momentoDTOs);
     }
 }

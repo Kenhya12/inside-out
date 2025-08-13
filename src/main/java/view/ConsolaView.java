@@ -3,7 +3,7 @@
 package view;
 
 import model.Emotion; 
-import model.Momento;
+import dto.MomentoDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -126,24 +126,24 @@ public class ConsolaView {
         }
     }
 
-    public void mostrarMomentos(List<Momento> momentos) {
-        if (momentos.isEmpty()) {
-            System.out.println("-------------------------------------");
-            System.out.println("No hay momentos registrados aún.");
-            System.out.println("-------------------------------------");
+    /**
+     * Muestra una lista de Momentos.
+     * @param momentoDTOs La lista de DTOs a mostrar.
+     */
+    public void mostrarMomentos(List<MomentoDTO> momentoDTOs) {
+        if (momentoDTOs.isEmpty()) {
+            System.out.println("No se encontraron momentos.");
             return;
         }
 
-        System.out.println("-------------------------------------");
-        System.out.println("       LISTA DE MOMENTOS VIVIDOS");
-        System.out.println("-------------------------------------");
-        for (Momento momento : momentos) {
-            System.out.println("ID: " + momento.getId());
-            System.out.println("Título: " + momento.getTitulo());
-            System.out.println("Descripción: " + momento.getDescripcion());
-            System.out.println("Emoción: " + momento.getEmocion().getName());
-            System.out.println("Fecha del suceso: " + momento.getFechaSuceso());
-            System.out.println("-------------------------------------");
+        System.out.println("\n--- Momentos registrados ---");
+        for (MomentoDTO dto : momentoDTOs) {
+            System.out.println("ID: " + dto.getId());
+            System.out.println("Título: " + dto.getTitulo());
+            System.out.println("Descripción: " + dto.getDescripcion());
+            System.out.println("Fecha: " + dto.getFecha());
+            System.out.println("Emoción: " + dto.getEmocion());
+            System.out.println("------------------------------------");
         }
     }
 

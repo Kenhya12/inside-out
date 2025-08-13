@@ -55,7 +55,7 @@ public class Momento {
         return fechaCreacion;
     }
 
-    public LocalDateTime getFechaModificacion() {
+    public LocalDateTime getFecha() {
         return fechaModificacion;
     }
 
@@ -77,6 +77,6 @@ public class Momento {
     @Override
     public String toString() {
         return "ID: " + id + ", Título: " + titulo + ", Emoción: " + emocion.getName() + 
-               ", Fecha: " + fechaSuceso + ", Descripción: " + descripcion;
+        ", Fecha: " + fechaSuceso + ", Descripción: " + descripcion;
     }
 }
