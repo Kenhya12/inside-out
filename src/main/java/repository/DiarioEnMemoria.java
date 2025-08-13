@@ -67,7 +67,20 @@ public class DiarioEnMemoria implements DiarioRepository {
     @Override
     public List<Momento> getMomentosByMesAndAnio(int mes, int anio) {
         return this.momentos.stream()
-                .filter(momento -> momento.getFecha().getMonthValue() == mes && momento.getFecha().getYear() == anio)
+                .filter(momento -> momento.getFecha().getMonthValue() == mes && 
+                momento.getFecha().getYear() == anio)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<Momento> getMomentosByFecha(int dia, int mes, int anio) {
+        return momentos.stream()
+                .filter(m -> m.getFecha().getDayOfMonth() == dia &&
+                            m.getFecha().getMonthValue() == mes &&
+                            m.getFecha().getYear() == anio)
                 .collect(Collectors.toList());
     }
+
 }
+

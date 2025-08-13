@@ -174,6 +174,8 @@ public class ConsolaView {
         while (true) {
             System.out.println("\n--- Menú de Filtros ---");
             System.out.println("1. Filtrar por Emoción");
+            System.out.println("2. Filtrar por Fecha");
+            System.out.println("3. Filtrar por Mes y Año");
             System.out.println("0. Volver al menú principal");
             System.out.print("Elige una opción: ");
             
@@ -247,5 +249,9 @@ public class ConsolaView {
                 mostrarMensajeError("Entrada no válida. Por favor, ingresa un número.");
             }
         }
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
     }
 }

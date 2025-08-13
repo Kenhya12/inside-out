@@ -14,7 +14,7 @@ public class MomentoMapper {
         dto.setId(momento.getId());
         dto.setTitulo(momento.getTitulo());
         dto.setDescripcion(momento.getDescripcion());
-        dto.setFecha(momento.getFecha().format(FORMATTER)); // <-- Revisa aquí, usa el método correcto de tu clase Momento
+        dto.setFecha(momento.getFecha().format(FORMATTER)); 
         dto.setEmocion(momento.getEmocion().getName());
         return dto;
     }

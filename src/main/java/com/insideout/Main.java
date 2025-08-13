@@ -22,7 +22,7 @@ public class Main {
         MomentoController momentoController = new MomentoController(diarioRepository, consolaView);
         
         // 2. Bucle principal de la aplicación
-        int opcion;
+       /* */ int opcion;
         do {
             opcion = consolaView.mostrarMenuPrincipal();
             
@@ -34,8 +34,11 @@ public class Main {
                 
                     consolaView.mostrarMensajeExito("Opción 'Ver todos los momentos' aún no implementada.");
                     break;
-                case 3: // <-- ¡Nuevo caso para eliminar!
+                case 3: 
                     momentoController.eliminarMomento();
+                    break;
+                case 4: 
+                    momentoController.filtrarMomentos();
                     break;
                 case 0:
                     consolaView.mostrarMensajeExito("Saliendo de la aplicación. ¡Hasta pronto!");
@@ -43,6 +46,7 @@ public class Main {
                 default:
                     consolaView.mostrarMensajeError("Opción no válida. Por favor, elige una opción del menú.");
             }
+
         } while (opcion != 0);
     }
 }

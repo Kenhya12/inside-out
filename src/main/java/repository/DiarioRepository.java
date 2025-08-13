@@ -16,6 +16,7 @@ public interface DiarioRepository {
     List<Momento> getMomentosByEmocion(Emotion emocion);
     
     List<Momento> getMomentosByFecha(LocalDateTime fecha);
+    List<Momento> getMomentosByFecha(int dia, int mes, int anio);
     List<Momento> getMomentosByMesAndAnio(int mes, int anio);
-
+    
 }

@@ -29,13 +29,12 @@ public class Main {
                     momentoController.crearNuevoMomento();
                     break;
                 case 2:
-                    // Aquí podríamos implementar la lógica para ver todos los momentos
                     momentoController.verTodosLosMomentos();
                     break;
-                case 3: // <-- Caso para eliminar!
+                case 3:
                     momentoController.eliminarMomento();
                     break;
-                case 4: // <-- Caso para filtar!
+                case 4: // <-- Caso para filtrar!
                     momentoController.filtrarMomentos();
                     break;
                 case 0:
@@ -47,3 +46,4 @@ public class Main {
         } while (opcion != 0);
     }
 }
+
