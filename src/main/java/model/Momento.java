@@ -1,36 +1,25 @@
-// src/main/java/model/Momento.java
-
 package model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Momento {
 
-    private static int contadorId = 0;
-    
-    private int id;
-    private String titulo;
-    private String descripcion;
-    private Emotion emocion;
-    private LocalDate fechaSuceso;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModificacion;
+    private static final AtomicInteger counter = new AtomicInteger(0);
+    private final int id;
+    private final String titulo;
+    private final String descripcion;
+    private final LocalDateTime fecha;
+    private final Emotion emocion;
 
-    // EL CONSTRUCTOR CORRECTO
-    // Su firma debe coincidir con la llamada del controlador:
-    // Momento(String, String, Emotion, LocalDate)
-    public Momento(String titulo, String descripcion, Emotion emocion, LocalDate fechaSuceso) {
-        this.id = ++contadorId;
+    public Momento(String titulo, String descripcion, LocalDateTime fecha, Emotion emocion) {
+        this.id = counter.incrementAndGet();
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.fecha = fecha;
         this.emocion = emocion;
-        this.fechaSuceso = fechaSuceso;
-        this.fechaCreacion = LocalDateTime.now();
-        this.fechaModificacion = LocalDateTime.now();
     }
-    
-    // Aquí irían los getters y setters...
+
     public int getId() {
         return id;
     }
@@ -43,40 +32,17 @@ public class Momento {
         return descripcion;
     }
 
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
     public Emotion getEmocion() {
         return emocion;
-    }
-
-    public LocalDate getFechaSuceso() {
-        return fechaSuceso;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public LocalDateTime getFecha() {
-        return fechaModificacion;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-        this.fechaModificacion = LocalDateTime.now();
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-        this.fechaModificacion = LocalDateTime.now();
-    }
-    
-    public void setEmocion(Emotion emocion) {
-        this.emocion = emocion;
-        this.fechaModificacion = LocalDateTime.now();
     }
 
     @Override
     public String toString() {
         return "ID: " + id + ", Título: " + titulo + ", Emoción: " + emocion.getName() + 
-        ", Fecha: " + fechaSuceso + ", Descripción: " + descripcion;
+        ", Fecha: " + fecha + ", Descripción: " + descripcion;
     }
 }

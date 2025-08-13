@@ -4,88 +4,61 @@ import model.Emotion;
 import model.Momento;
 import repository.DiarioRepository;
 import view.ConsolaView;
-import dto.MomentoDTO; 
-import mapper.MomentoMapper; 
+import dto.MomentoDTO;
+import mapper.MomentoMapper;
 
-
-import java.time.LocalDate;
-import java.util.List; 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
-
 
 public class MomentoController {
 
-    // Dependencias: el controlador necesita una instancia de la Vista y el Repositorio (Modelo).
     private final DiarioRepository diarioRepository;
     private final ConsolaView consolaView;
 
-    /**
-     * Constructor del controlador.
-     * Recibe las dependencias a través de inyección.
-     */
     public MomentoController(DiarioRepository diarioRepository, ConsolaView consolaView) {
         this.diarioRepository = diarioRepository;
         this.consolaView = consolaView;
     }
 
-    /**
-     * Coordina la creación de un nuevo momento.
-     * 1. Solicita los datos al usuario a través de la Vista.
-     * 2. Crea el objeto Momento.
-     * 3. Lo guarda en el repositorio.
-     * 4. Muestra un mensaje de confirmación al usuario.
-     */
     public void crearNuevoMomento() {
-        // 1. La Vista solicita los datos al usuario
         String titulo = consolaView.solicitarTitulo();
         String descripcion = consolaView.solicitarDescripcion();
-        LocalDate fechaSuceso = consolaView.solicitarFecha();
+        LocalDateTime fecha = consolaView.solicitarFecha();
         Emotion emocion = consolaView.solicitarEmocion();
 
-        // 2. El Controlador crea un nuevo objeto Momento con los datos
-        Momento nuevoMomento = new Momento(titulo, descripcion, emocion, fechaSuceso);
-
-        // 3. El Controlador utiliza el Repositorio (Modelo) para guardar el objeto
+        Momento nuevoMomento = new Momento(titulo, descripcion, fecha, emocion);
         diarioRepository.addMomento(nuevoMomento);
+        consolaView.mostrarMensajeExito("Momento añadido con éxito: " + nuevoMomento.getTitulo());
+    }
 
-        // 4. La Vista muestra un mensaje de éxito al usuario
-        consolaView.mostrarMensajeExito("Momento vivido añadido correctamente.");
-    } 
-    /**
-     * Coordina la visualización de todos los momentos.
-     * 1. Solicita al Repositorio la lista de momentos.
-     * 2. Le pasa esa lista a la Vista para que la muestre.
-     */
     public void verTodosLosMomentos() {
         List<Momento> momentos = diarioRepository.getTodosLosMomentos();
-        // **CORRECCIÓN:** Convertimos la lista de Momentos a una lista de MomentoDTO
         List<MomentoDTO> momentoDTOs = momentos.stream()
             .map(MomentoMapper::toDTO)
             .collect(Collectors.toList());
         consolaView.mostrarMomentos(momentoDTOs);
     }
-
-        public void eliminarMomento() {
-        // 1. Mostrar todos los momentos para que el usuario elija
+    
+    public void eliminarMomento() {
         this.verTodosLosMomentos();
         
-        // Si no hay momentos, no podemos eliminar nada
         if (diarioRepository.getTodosLosMomentos().isEmpty()) {
+            consolaView.mostrarMensajeError("No hay momentos para eliminar.");
             return;
         }
 
-        // 2. Solicitar el ID del momento a eliminar
         int id = consolaView.solicitarId();
         
-        // 3. Eliminar el momento y mostrar el resultado
         boolean eliminado = diarioRepository.eliminarMomento(id);
+        
         if (eliminado) {
             consolaView.mostrarMensajeExito("Momento con ID " + id + " eliminado correctamente.");
         } else {
             consolaView.mostrarMensajeError("No se encontró un momento con el ID " + id + ".");
         }
     }
-
+    
     public void filtrarMomentos() {
         int opcionFiltro;
         do {
@@ -94,6 +67,12 @@ public class MomentoController {
             switch (opcionFiltro) {
                 case 1:
                     filtrarPorEmocion();
+                    break;
+                case 2:
+                    filtrarPorFecha();
+                    break;
+                case 3:
+                    filtrarPorMesYAnio();
                     break;
                 case 0:
                     consolaView.mostrarMensajeExito("Volviendo al menú principal.");
@@ -108,10 +87,30 @@ public class MomentoController {
     private void filtrarPorEmocion() {
         Emotion emocion = consolaView.solicitarEmocionFiltro();
         List<Momento> momentosFiltrados = diarioRepository.getMomentosByEmocion(emocion);
-        // **CORRECCIÓN:** Convertimos la lista de Momentos a una lista de MomentoDTO
+        List<MomentoDTO> momentoDTOs = momentosFiltrados.stream()
+            .map(MomentoMapper::toDTO)
+            .collect(Collectors.toList());
+        consolaView.mostrarMomentos(momentoDTOs);
+    }
+    
+    private void filtrarPorFecha() {
+        LocalDateTime fecha = consolaView.solicitarFecha();
+        List<Momento> momentosFiltrados = diarioRepository.getMomentosByFecha(fecha);
+        List<MomentoDTO> momentoDTOs = momentosFiltrados.stream()
+            .map(MomentoMapper::toDTO)
+            .collect(Collectors.toList());
+        consolaView.mostrarMomentos(momentoDTOs);
+    }
+    
+    private void filtrarPorMesYAnio() {
+        int mes = consolaView.solicitarMes();
+        int anio = consolaView.solicitarAnio();
+        List<Momento> momentosFiltrados = diarioRepository.getMomentosByMesAndAnio(mes, anio);
         List<MomentoDTO> momentoDTOs = momentosFiltrados.stream()
             .map(MomentoMapper::toDTO)
             .collect(Collectors.toList());
         consolaView.mostrarMomentos(momentoDTOs);
     }
 }
+
+

@@ -4,6 +4,7 @@ package repository;
 
 import model.Emotion;
 import model.Momento;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -54,6 +55,19 @@ public class DiarioEnMemoria implements DiarioRepository {
     public List<Momento> getMomentosByEmocion(Emotion emocion) {
         return this.momentos.stream()
                 .filter(momento -> momento.getEmocion() == emocion)
+                .collect(Collectors.toList());
+    }
+@Override
+    public List<Momento> getMomentosByFecha(LocalDateTime fecha) {
+        return this.momentos.stream()
+                .filter(momento -> momento.getFecha().toLocalDate().isEqual(fecha.toLocalDate()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Momento> getMomentosByMesAndAnio(int mes, int anio) {
+        return this.momentos.stream()
+                .filter(momento -> momento.getFecha().getMonthValue() == mes && momento.getFecha().getYear() == anio)
                 .collect(Collectors.toList());
     }
 }

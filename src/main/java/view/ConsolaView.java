@@ -6,6 +6,7 @@ import model.Emotion;
 import dto.MomentoDTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException; 
@@ -25,25 +26,24 @@ public class ConsolaView {
      * @return El número de la opción elegida por el usuario.
      */
     public int mostrarMenuPrincipal() {
-        System.out.println("\n--- Mi Diario Interior ---");
-        System.out.println("1. Añadir un nuevo momento");
-        System.out.println("2. Ver todos los momentos");
-        System.out.println("3. Eliminar un momento"); 
-        System.out.println("4. Filtrar momentos"); 
-        System.out.println("0. Salir");
-        System.out.print("Elige una opción: ");
-        
-        // Lee la opción y maneja posibles errores si no es un número
-        while (!scanner.hasNextInt()) {
-            System.out.println("Entrada no válida. Por favor, introduce un número.");
-            scanner.next(); // Consume la entrada no válida
+        while (true) {
+            System.out.println("\n--- Mi Diario Interior ---");
+            System.out.println("1. Añadir un nuevo momento");
+            System.out.println("2. Ver todos los momentos");
+            System.out.println("3. Eliminar un momento"); 
+            System.out.println("4. Filtrar momentos"); 
+            System.out.println("0. Salir");
             System.out.print("Elige una opción: ");
+            
+            try {
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); // <-- AÑADIDO: Limpia el buffer después de leer el número
+                return opcion;
+            } catch (InputMismatchException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
+                scanner.nextLine(); // <-- Limpia el buffer si hay una excepción
+            }
         }
-        
-        int opcion = scanner.nextInt();
-        scanner.nextLine(); // Limpia el buffer del scanner
-        
-        return opcion;
     }
     
     /**
@@ -81,19 +81,20 @@ public class ConsolaView {
         return scanner.nextLine();
     }
     
+
     /**
-     * Solicita una fecha y la valida.
-     * @return Un objeto LocalDate si la fecha es válida, o null si no.
+     * Solicita una fecha en formato dd/mm/yyyy.
+     * @return La fecha ingresada como LocalDateTime.
      */
-    public LocalDate solicitarFecha() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public LocalDateTime solicitarFecha() {
         while (true) {
-            System.out.print("Introduce la fecha del suceso (dd/mm/yyyy): ");
-            String fechaTexto = scanner.nextLine();
+            System.out.print("Fecha del momento (dd/mm/yyyy): ");
+            String fechaStr = scanner.nextLine();
             try {
-                return LocalDate.parse(fechaTexto, formatter);
+                LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                return fecha.atStartOfDay(); // <-- Convertimos el LocalDate a LocalDateTime
             } catch (DateTimeParseException e) {
-                mostrarMensajeError("Formato de fecha inválido. Inténtalo de nuevo.");
+                mostrarMensajeError("Formato de fecha no válido. Usa dd/mm/yyyy.");
             }
         }
     }
@@ -104,7 +105,7 @@ public class ConsolaView {
      */
     public Emotion solicitarEmocion() {
         System.out.println("Elige una emoción:");
-        Emotion[] emociones = Emotion.values(); // Obtenemos las emociones del enum
+        Emotion[] emociones = Emotion.values(); 
         for (int i = 0; i < emociones.length; i++) {
             System.out.println((i + 1) + ". " + emociones[i].getName());
         }
@@ -113,7 +114,7 @@ public class ConsolaView {
             System.out.print("Elige el número de la emoción: ");
             try {
                 int opcion = scanner.nextInt();
-                scanner.nextLine(); // Limpiamos el buffer
+                scanner.nextLine(); // <-- AÑADIDO: Limpia el buffer
                 if (opcion > 0 && opcion <= emociones.length) {
                     return emociones[opcion - 1];
                 } else {
@@ -121,7 +122,7 @@ public class ConsolaView {
                 }
             } catch (InputMismatchException e) {
                 mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
-                scanner.nextLine(); 
+                scanner.nextLine(); // Limpia el buffer
             }
         }
     }
@@ -156,7 +157,7 @@ public class ConsolaView {
             try {
                 System.out.print("Introduce el ID del momento que deseas eliminar: ");
                 int id = scanner.nextInt();
-                scanner.nextLine(); // Limpia el buffer
+                scanner.nextLine(); // <-- AÑADIDO: Limpia el buffer
                 return id;
             } catch (InputMismatchException e) {
                 mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
@@ -170,21 +171,21 @@ public class ConsolaView {
      * @return La opción elegida por el usuario.
      */
     public int mostrarMenuFiltro() {
-        System.out.println("\n--- Menú de Filtros ---");
-        System.out.println("1. Filtrar por Emoción");
-        System.out.println("0. Volver al menú principal");
-        System.out.print("Elige una opción: ");
-        
-        while (!scanner.hasNextInt()) {
-            System.out.println("Entrada no válida. Por favor, introduce un número.");
-            scanner.next();
+        while (true) {
+            System.out.println("\n--- Menú de Filtros ---");
+            System.out.println("1. Filtrar por Emoción");
+            System.out.println("0. Volver al menú principal");
             System.out.print("Elige una opción: ");
+            
+            try {
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); // <-- AÑADIDO: Limpia el buffer
+                return opcion;
+            } catch (InputMismatchException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, introduce un número.");
+                scanner.nextLine(); // Limpia el buffer
+            }
         }
-        
-        int opcion = scanner.nextInt();
-        scanner.nextLine();
-        
-        return opcion;
     }
     
     /**
@@ -214,5 +215,37 @@ public class ConsolaView {
             }
         }
     }
-}
 
+
+    public int solicitarMes() {
+        while(true) {
+            try {
+                System.out.print("Mes (1-12): ");
+                int mes = Integer.parseInt(scanner.nextLine());
+                if (mes >= 1 && mes <= 12) {
+                    return mes;
+                } else {
+                    mostrarMensajeError("Mes no válido. Por favor, ingresa un número entre 1 y 12.");
+                }
+            } catch (NumberFormatException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, ingresa un número.");
+            }
+        }
+    }
+
+    public int solicitarAnio() {
+        while(true) {
+            try {
+                System.out.print("Año: ");
+                int anio = Integer.parseInt(scanner.nextLine());
+                if (anio > 0) {
+                    return anio;
+                } else {
+                    mostrarMensajeError("Año no válido. Por favor, ingresa un número positivo.");
+                }
+            } catch (NumberFormatException e) {
+                mostrarMensajeError("Entrada no válida. Por favor, ingresa un número.");
+            }
+        }
+    }
+}
